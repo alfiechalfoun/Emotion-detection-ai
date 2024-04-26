@@ -3,9 +3,13 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import pandas as pd 
 import time
 
-# mnist = tf.keras.datasets.mnist
+FER = pd.read_csv('/Users/alfie/Documents/school /computer science /courswork /FER-2013 data set ')
+
+
+
 
 # (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
@@ -24,27 +28,27 @@ import time
 
 # model.save('handwriting_model.h5')
 
-model = tf.keras.models.load_model('handwriting_model.h5')
+# model = tf.keras.models.load_model('handwriting_model.h5')
 
 
 # loss, accuracy = model.evaluate(x_test, y_test)
 # print(loss)
 # print(accuracy)
 
-image_number = 1
+# image_number = 1
 
-while os.path.isfile(f'/Users/alfie/Documents/school /computer science /courswork /number ai /MINIS data set/testSet/testSet/img_{image_number}.jpg'):
-    try:
-        image_path = f'/Users/alfie/Documents/school /computer science /courswork /number ai /MINIS data set/testSet/testSet/img_{image_number}.jpg'
-        # Load the image
-        image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-        image = np.array([image])
-        prediction = model.predict(image)
-        print(f'the number is probably a {np.argmax(prediction)}')
-        plt.imshow(image[0], cmap=plt.cm.binary)
-        plt.show()
-        time.sleep(1)
-    except Exception as e:
-        print(f'error is {e}')
-    finally:
-        image_number += 1
+# while os.path.isfile(f'/Users/alfie/Documents/school /computer science /courswork /number ai /MINIS data set/testSet/testSet/img_{image_number}.jpg'):
+#     try:
+#         image_path = f'/Users/alfie/Documents/school /computer science /courswork /number ai /MINIS data set/testSet/testSet/img_{image_number}.jpg'
+#         # Load the image
+#         image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+#         image = np.array([image])
+#         prediction = model.predict(image)
+#         print(f'the number is probably a {np.argmax(prediction)}')
+#         plt.imshow(image[0], cmap=plt.cm.binary)
+#         plt.show()
+#         time.sleep(1)
+#     except Exception as e:
+#         print(f'error is {e}')
+#     finally:
+#         image_number += 1
