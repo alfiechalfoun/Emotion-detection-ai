@@ -1,81 +1,67 @@
-import os
-import cv2
+# imports
+import cv2 
+import tensorflow.keras as tf
+import matplotlib.pyplot as plt 
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization, Activation
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.utils import to_categorical
+import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import tensorflow as tf
 
-mnist = tf.keras.datasets.mnist
+# labeling
+emotions = ['angry','disgust','fear','happy','neutral','sad','surprise']
+FER_path = '/Users/alfie/Documents/school /computer science /courswork /FER-2013 data set /fer2013.csv'
 
-# (x_train, y_train), (x_test, y_test) = mnist.load_data()
+# loading the FER_2013 dataset 
+faces = pd.read_csv(FER_path)
+faces['pixels'] = faces['pixels'].apply(lambda x: np.fromstring(x, dtype=int, sep=' ').reshape(48, 48) / 255.0)
 
-# x_train = tf.keras.utils.normalize(x_train, axis=1 )
-# x_test = tf.keras.utils.normalize(x_test, axis=1)
+# splitting the data into training and testing 
+training_data = faces[faces['Usage'] == 'Training'] 
+test_data =  faces[faces['Usage'] == 'PublicTest']
 
-# model = tf.keras.models.Sequential()
-# model.add(tf.keras.layers.Flatten(input_shape=(28,28)))
-# model.add(tf.keras.layers.Dense(128, activation='relu'))
-# model.add(tf.keras.layers.Dense(128, activation='relu'))
-# model.add(tf.keras.layers.Dense(10, activation='softmax'))
+# preparing the data
+training_images = np.stack(training_data['pixels'].values)
+training_labels = training_data['emotion'].values
+testing_images = np.stack(test_data['pixels'].values)
+testing_labels = test_data['emotion'].values
 
-# model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+# Reshaping images
+training_images = training_images.reshape(-1, 48, 48, 1)
+testing_images = testing_images.reshape(-1, 48, 48, 1)
 
-# model.fit(x_train,y_train,epochs=10 )
+# Convert labels to categorical format
+num_classes = len(emotions)
+training_labels = to_categorical(training_labels, num_classes=num_classes)
+testing_labels = to_categorical(testing_labels, num_classes=num_classes)
 
-# model.save('handwriting_model.h5')
-#
-model = tf.keras.models.load_model('handwriting_model.h5')
+# Model definition
+model = Sequential()
+input_shape = (48, 48, 1)
+model.add(Conv2D(64, (5, 5), input_shape=input_shape, activation='relu', padding='same'))
+model.add(Conv2D(64, (5, 5), activation='relu', padding='same'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
 
+model.add(Conv2D(128, (5, 5), activation='relu', padding='same'))
+model.add(Conv2D(128, (5, 5), activation='relu', padding='same'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
 
-# loss, accuracy = model.evaluate(x_test, y_test)
-# print(loss)
-# print(accuracy)
+model.add(Conv2D(256, (3, 3), activation='relu', padding='same'))
+model.add(Conv2D(256, (3, 3), activation='relu', padding='same'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
 
-image_number = 1
+model.add(Flatten())
+model.add(Dense(128))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+model.add(Dropout(0.2))
+model.add(Dense(num_classes))
+model.add(Activation('softmax'))
 
-while os.path.isfile(f'/Users/alfie/Documents/school /computer science /courswork /number ai /MINIS data set/testSample/testSample/img_{image_number}.jpg'):
-    try:
-        image_path = f'/Users/alfie/Documents/school /computer science /courswork /number ai /MINIS data set/testSample/testSample/img_{image_number}.jpg'
-        image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-        image = np.array([image])
-        prediction = model.predict(image)
-        print(f'the number is probably a {np.argmax(prediction)}')
-        plt.imshow(image[0], cmap=plt.cm.binary)
-        plt.show()
-    except Exception as e:
-        print(f'error is {e}')
-    finally:
-        image_number += 1
+# Model compilation
+model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
 
-
-
-
-
-import os
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-import tensorflow as tf
-import pandas as pd 
-import time
-
-FER = pd.read_csv('/Users/alfie/Documents/school /computer science /courswork /FER-2013 data set ')
-
-(x_train, y_train), (x_test, y_test) = FER.load_data()
-
-
-x_train = tf.keras.utils.normalize(x_train, axis=1 )
-x_test = tf.keras.utils.normalize(x_test, axis=1)
-
-model = tf.keras.models.Sequential()
-model.add(tf.keras.layers.Flatten(input_shape=(28,28)))
-model.add(tf.keras.layers.Dense(128, activation='relu'))
-model.add(tf.keras.layers.Dense(128, activation='relu'))
-model.add(tf.keras.layers.Dense(10, activation='softmax'))
-
-model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-
-model.fit(x_train,y_train,epochs=10 )
-
-# model.save('FER_model.h5')
-
-# model = tf.keras.models.load_model('FER_model.h5')
+model.summary()
