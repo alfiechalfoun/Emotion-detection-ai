@@ -65,3 +65,15 @@ model.add(Activation('softmax'))
 model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
 
 model.summary()
+
+
+    # # showing the image 
+    # plt.figure(figsize=(10,10))
+    # for i in range (16):
+    #     plt.subplot(4,4,i+1)
+    #     plt.xticks ([])
+    #     plt.yticks ([])
+    #     plt.imshow(testing_images[i,:,:,0], cmap=plt.cm.gray)
+    #     emotions_lable = emotions[testing_labels[i]]
+    #     plt.xlabel(emotions_lable)
+    # plt.show()
