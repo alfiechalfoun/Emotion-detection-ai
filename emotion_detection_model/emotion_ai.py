@@ -46,6 +46,10 @@ class FER13Data():
         self.testing_labels = self.test_data['emotion'].values
         self.training_images = self.training_images.reshape(-1, 48, 48, 1)
         self.testing_images = self.testing_images.reshape(-1, 48, 48, 1)
+
+    def prosses_image(self, image):
+        image = np.expand_dims(image, axis=0)  
+        return image
         
 
 
@@ -146,6 +150,11 @@ class Modle(FER13Data):
         test_loss, test_accuracy = self.modle.evaluate(self.testing_images, self.testing_labels)
         print(f'the loss is {test_loss} \n the acuracy is {test_accuracy}')
 
+    def predict(self,image):
+        prosses_image = super().prosses_image(image)
+        prediction = self.modle.predict(prosses_image)
+        predicted_label = self.emotions[np.argmax(prediction)]
+        return(predicted_label)
 
 if __name__ == '__main__':
     modle = Modle()
