@@ -4,7 +4,7 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 
 
-model = load_model('emotion detection model/emotion_detection_modle.h5')
+model = load_model('./emotion_detection_model/emotion_detection_modle.h5')
 
 plot_model(
     model, 

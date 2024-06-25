@@ -1,0 +1,7 @@
+pandas
+numpy
+matplotlib
+tensorflow
+PyQt5
+opencv-python
+pydot
