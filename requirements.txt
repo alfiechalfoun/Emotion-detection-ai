@@ -4,4 +4,5 @@ matplotlib
 tensorflow
 PyQt5
 opencv-python
-pydot
+scikit-learn
+seaborn

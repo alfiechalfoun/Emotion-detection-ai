@@ -13,17 +13,6 @@ from tensorflow.keras.optimizers import *  # type: ignore
 from tensorflow.keras.preprocessing.image import ImageDataGenerator  # type: ignore
 from tensorflow.keras.models import load_model  # type: ignore
 
-def limit_power():
-    tf.config.threading.set_intra_op_parallelism_threads(5)
-    tf.config.threading.set_inter_op_parallelism_threads(3)
-
-    if tf.config.experimental.list_physical_devices('GPU'):
-        physical_devices = tf.config.list_physical_devices('GPU')
-        try:
-            tf.config.experimental.set_memory_growth(physical_devices[0], True)
-        except:
-            pass
-
 
 class FER13Data():
     def __init__(self):
@@ -61,32 +50,39 @@ class Modle(FER13Data):
     # crating my model
     def create_modle(self): 
         super().prepering_data()
-    
+
         self.model = Sequential()
         self.shape = (48,48,1)
-        self.model.add(Conv2D(32, (3,3), activation='relu', input_shape = self.shape, padding = 'same')) 
+        self.model.add(Conv2D(32,(3,3), activation='relu', input_shape = self.shape, padding = 'same'))
         self.model.add(Conv2D(32,(3,3), activation='relu', padding = "same"))
-        self.model.add(Conv2D(32,(3,3),activation='relu', padding = 'same'))
+        self.model.add(Dropout(0.25))
         self.model.add(BatchNormalization())
         self.model.add(MaxPooling2D((2,2)))
         self.model.add(Dropout(0.25))
 
-        self.model.add(Conv2D(64,(3,3), activation='relu', padding = 'same'))
-        self.model.add(Conv2D(64,(3,3), activation = 'relu',padding = 'same'))
-        self.model.add(Conv2D(64,(3,3), activation ='relu', padding = 'same'))
+        self.model.add(Conv2D(64,(3,3), activation = 'relu', padding = 'same'))
+        self.model.add(Conv2D(64,(3,3), activation = 'relu', padding = 'same'))
+        self.model.add(Dropout(0.25))
         self.model.add(BatchNormalization())
         self.model.add(MaxPooling2D((2,2)))
         self.model.add(Dropout(0.25))
 
-        self.model.add(Conv2D(128, (3,3), activation ='relu'))
         self.model.add(Conv2D(128, (3,3), activation = 'relu', padding = 'same'))
-        self.model.add(Conv2D(128,(3,3), activation = 'relu', padding = 'same'))
+        self.model.add(Conv2D(128, (3,3), activation = 'relu', padding = 'same'))
+        self.model.add(Dropout(0.25))
+        self.model.add(BatchNormalization())
+        self.model.add(MaxPooling2D((2,2)))
+        self.model.add(Dropout(0.25))
+
+        self.model.add(Conv2D(256, (3,3), activation='relu', padding = 'same'))
+        self.model.add(Conv2D(256, (3,3), activation='relu', padding = 'same'))
+        self.model.add(Dropout(0.25))
         self.model.add(BatchNormalization())
         self.model.add(MaxPooling2D((2,2)))
         self.model.add(Dropout(0.25))
 
         self.model.add(Flatten())
-        self.model.add(Dense(128, activation='relu'))
+        self.model.add(Dense(256, activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Activation('relu'))
         self.model.add(Dropout(0.5))
@@ -100,7 +96,6 @@ class Modle(FER13Data):
 
     def train_modle(self):
         self.create_modle()
-        limit_power()
 
     # making the modle stop traning if no improvment are found aveter 3 epsolons 
         self.early_stop = EarlyStopping(
@@ -158,5 +153,5 @@ class Modle(FER13Data):
 
 if __name__ == '__main__':
     modle = Modle()
-    modle.get_modle_layout()
+    modle.get_acuracy()
     

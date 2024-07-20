@@ -1,7 +1,7 @@
 import tensorflow as tf 
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import load_model
-from emotion_ai import Modle, FER13Data
+from emotion_ai import Modle
 
 class Imiges(Modle):
     def __init__(self):
