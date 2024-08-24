@@ -150,7 +150,6 @@ class Modle(FER13Data):
 
     # takes an imige and uses the model to predict teh output 
     def predict(self,image):
-        self.load_modle()
         prosses_image = super().prosses_image(image)
         prediction = self.modle.predict(prosses_image)
         predicted_label = self.emotions[np.argmax(prediction)]

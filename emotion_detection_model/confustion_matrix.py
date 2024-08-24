@@ -12,6 +12,7 @@ class Matrix(Modle):
     def __init__(self):
         super().__init__()
         super().prepering_data()
+        super().load_modle()
         self.labels = []
         self.predictions = []
 
