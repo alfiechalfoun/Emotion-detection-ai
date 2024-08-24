@@ -41,8 +41,7 @@ class FER13Data():
         image = np.expand_dims(image, axis=0)  
         return image
         
-
-
+# Controles the creating and training off the model
 class Modle(FER13Data):
     def __init__(self):
         super().__init__()
@@ -91,6 +90,7 @@ class Modle(FER13Data):
         self.model.add(Activation('softmax'))
         self.model.summary()
 
+    # display the layout of the model
     def get_modle_layout(self):
         self.create_modle()
         self.model.summary()
@@ -126,6 +126,8 @@ class Modle(FER13Data):
         # traning the modle 
         self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
+        # training the model and saving it 
+        # keeps each version of the accuracy in self.history 
         self.history = self.model.fit(
             self.training_images, 
             self.training_labels, 
@@ -139,14 +141,16 @@ class Modle(FER13Data):
     def load_modle(self):
         self.modle = load_model('emotion_detection_model/emotion_detection_modle.h5')
 
-    # testing the modle 
+    # testing the modle and displaying accuracy
     def get_acuracy(self):
         self.load_modle()
         super().prepering_data()
         test_loss, test_accuracy = self.modle.evaluate(self.testing_images, self.testing_labels)
         print(f'the loss is {test_loss} \n the acuracy is {test_accuracy}')
 
+    # takes an imige and uses the model to predict teh output 
     def predict(self,image):
+        self.load_modle()
         prosses_image = super().prosses_image(image)
         prediction = self.modle.predict(prosses_image)
         predicted_label = self.emotions[np.argmax(prediction)]
