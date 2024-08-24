@@ -13,21 +13,21 @@ from tensorflow.keras.optimizers import *  # type: ignore
 from tensorflow.keras.preprocessing.image import ImageDataGenerator  # type: ignore
 from tensorflow.keras.models import load_model  # type: ignore
 
-
+# class for loading and prepering the FER_2013 daterset
 class FER13Data():
     def __init__(self):
-        # lableing
+        # lableing the dater 
         self.emotions = ['angry','disgust','fear','happy','neutral','sad','surprise']
-        self.FER_path = '/Users/alfie/Documents/school /computer science /courswork /FER-2013 data set /fer2013.csv'
+        self.FER_path = '/Users/alfie/Documents/school /computer science /courswork /FER-2013 data set /fer2013.csv' # change to where the file is
 
         #loading the FER_2013 daterset 
         self.faces = pd.read_csv(self.FER_path)
         self.faces['pixels'] = self.faces['pixels'].apply(lambda x: np.fromstring(x, dtype=int, sep=' ').reshape(48, 48) / 255.0)
 
-        # splitting the data into traning and testing 
         self.traning_data = self.faces[self.faces['Usage'] == 'Training'] 
         self.test_data =  self.faces[self.faces['Usage'] == 'PublicTest']
 
+    # Prepare and reshape the image data and labels for training and testing the neural network
     def prepering_data(self):
         self.training_images = np.stack(self.traning_data['pixels'].values)
         self.training_labels = self.traning_data['emotion'].values
@@ -36,6 +36,7 @@ class FER13Data():
         self.training_images = self.training_images.reshape(-1, 48, 48, 1)
         self.testing_images = self.testing_images.reshape(-1, 48, 48, 1)
 
+    # Expand the dimensions of a single image to match the input shape expected by the neural network
     def prosses_image(self, image):
         image = np.expand_dims(image, axis=0)  
         return image
@@ -125,7 +126,7 @@ class Modle(FER13Data):
         # traning the modle 
         self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-        self.model.fit(
+        self.history = self.model.fit(
             self.training_images, 
             self.training_labels, 
             epochs=20, 
