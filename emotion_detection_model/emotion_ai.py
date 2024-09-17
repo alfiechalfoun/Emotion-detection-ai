@@ -1,5 +1,4 @@
 # 60 pecent acuracy
-# imports
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -95,10 +94,11 @@ class Modle(FER13Data):
         self.create_modle()
         self.model.summary()
 
+    
     def train_modle(self):
         self.create_modle()
 
-    # making the modle stop traning if no improvment are found aveter 3 epsolons 
+    #TODO making the modle stop traning if no improvment are found aveter 3 epsolons 
         self.early_stop = EarlyStopping(
             monitor='val_loss', 
             min_delta=0.001, 
@@ -123,6 +123,7 @@ class Modle(FER13Data):
             batch_size=32,
             shuffle=True
         )
+
         # traning the modle 
         self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 

@@ -1,3 +1,6 @@
 venv/
 .pycache
 .DS_Store
+video/__pycache__/Video.cpython-311.pyc
+CurrentFace.jpg
+video/__pycache__
