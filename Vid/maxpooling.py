@@ -8,6 +8,7 @@ photo = '/Users/alfie/Desktop/pearce.HEIC'
 class Maxpooling():
     
     def readimage(self,im):
+        self.im = im
         if self.im.lower().endswith(".heic"):
 
             heif_file = pillow_heif.read_heif(self.im)
@@ -42,11 +43,11 @@ class Maxpooling():
         except IndexError:
             self.channels = 1
 
-        # Calculate the new dimensions to crop to the nearest multiple of 48
+        # calculate the new dimentions of the image 
         new_height = (self.height // 48) * 48
         new_width = (self.width // 48) * 48
 
-        # Calculate the cropping margins
+        # Calculate where to crop
         crop_top = (self.height - new_height) // 2
         crop_bottom = self.height - new_height - crop_top
         crop_left = (self.width - new_width) // 2
@@ -104,7 +105,7 @@ class Maxpooling():
         pool_size = (Croped_image.shape[0] // 48, Croped_image.shape[1] // 48)
         self.pooled_image = self.Maxpool(Croped_image, pool_size)
         
-        return self.pooled_image
+        return self.pooled_image[0:48, 0:48]
 
 if __name__ == '__main__':
     obj = Maxpooling()

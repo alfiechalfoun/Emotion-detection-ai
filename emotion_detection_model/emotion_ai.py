@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import cv2 
 from tensorflow.keras.models import Sequential  # type: ignore
 from tensorflow.keras.layers import Dense, Activation, Dropout, Flatten, Conv2D, MaxPooling2D,BatchNormalization  # type: ignore
 from tensorflow.keras.metrics import categorical_accuracy  # type: ignore
@@ -16,7 +17,7 @@ from tensorflow.keras.models import load_model  # type: ignore
 class FER13Data():
     def __init__(self):
         # lableing the dater 
-        self.emotions = ['angry','disgust','fear','happy','neutral','sad','surprise']
+        self.emotions = ['angry','disgust','fear','happy','sad','surprise','neutral ']
         self.FER_path = '/Users/alfie/Documents/school /computer science /courswork /FER-2013 data set /fer2013.csv' # change to where the file is
 
         #loading the FER_2013 daterset 
@@ -37,8 +38,23 @@ class FER13Data():
 
     # Expand the dimensions of a single image to match the input shape expected by the neural network
     def prosses_image(self, image):
-        image = np.expand_dims(image, axis=0)  
-        return image
+    # had to use try as i dident know what the imput image was
+        try:
+            image = cv2.imread(image)
+            image = cv2.resize(image, (48, 48))
+                    
+                    # Convert to grayscale if it's not already
+            if len(image.shape) == 3 and image.shape[2] == 3:
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                    
+                    # Normalize the image
+            image = image.astype('float32') / 255.0
+                    
+                    # Reshape the image to (48, 48, 1)
+            image = image.reshape(48, 48, 1)
+        finally:
+            image = np.expand_dims(image, axis=0)  
+            return image
         
 # Controles the creating and training off the model
 class Modle(FER13Data):

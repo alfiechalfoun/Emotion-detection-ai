@@ -3,4 +3,6 @@ venv/
 .DS_Store
 video/__pycache__/Video.cpython-311.pyc
 CurrentFace.jpg
-video/__pycache__
+Vid/__pycache__
+emotion_detection_model/__pycache__
+emotion_detection_model/__pycache__/emotion_ai.cpython-311.pyc

@@ -1,5 +1,5 @@
 import cv2
-from maxpooling import Maxpooling
+from .maxpooling import Maxpooling
 
 class Video(Maxpooling):
     def __init__(self):
@@ -23,7 +23,7 @@ class Video(Maxpooling):
             cv2.imwrite('CurrentFace.jpg', self.resised_face)
 
 
-    def run(self):
+    def runing_video(self):
         self.run = True
         while self.run:
             ret, self.frame = self.vid.read()
@@ -42,11 +42,14 @@ class Video(Maxpooling):
     def release_resources(self):
         self.vid.release()
         cv2.destroyAllWindows()
+    
+    def Run(self):
+        try:
+            self.runing_video()
+        finally:
+            self.release_resources()
         
 
 if __name__ == '__main__':
     video_obj = Video()
-    try:
-        video_obj.run()
-    finally:
-        video_obj.release_resources()
+    video_obj.Run()
