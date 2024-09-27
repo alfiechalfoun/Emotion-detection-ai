@@ -8,11 +8,30 @@ class Video(Maxpooling):
         if not self.vid.isOpened():
             print('Error, cannot find camera.')
 
+        self.box_colour = (200, 200, 0)
+
+    def change_box_coloure(self, emotion):
+        if emotion == 'angry':
+            self.box_colour = (0,0,255)
+        elif emotion == 'disgust':
+            self.box_colour = (0,100,0)
+        elif emotion == 'fear':
+            self.box_colour = (128,0,128)
+        elif emotion == 'happy':
+            self.box_colour = (0,255,255)
+        elif emotion == 'sad':
+            self.box_colour = (255,0,0)
+        elif emotion == 'surprise':
+            self.box_colour = (0, 165, 255)
+        elif emotion == 'neutral':
+            self.box_colour = (200, 200, 0)
+        
+
     def detect_bounding_box(self, vid):
         self.gray_image = cv2.cvtColor(vid, cv2.COLOR_BGR2GRAY)
         self.faces = self.face_classifier.detectMultiScale(self.gray_image, 1.1, 4, minSize=(200, 200))
         for (x, y, w, h) in self.faces:
-            cv2.rectangle(vid, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.rectangle(vid, (x, y), (x + w, y + h), self.box_colour, 2)
         return vid
     
     def Face_crop(self):

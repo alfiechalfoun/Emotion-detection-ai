@@ -15,6 +15,7 @@ class main(Video, Modle):
             self.count = 0
             if hasattr(self, 'resised_face'):
                 prediction = self.predict('CurrentFace.jpg')
+                self.change_box_coloure(prediction)
                 print(prediction)
             
     def run_video(self):

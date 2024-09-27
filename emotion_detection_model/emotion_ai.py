@@ -17,7 +17,7 @@ from tensorflow.keras.models import load_model  # type: ignore
 class FER13Data():
     def __init__(self):
         # lableing the dater 
-        self.emotions = ['angry','disgust','fear','happy','sad','surprise','neutral ']
+        self.emotions = ['angry','disgust','fear','happy','sad','surprise','neutral']
         self.FER_path = '/Users/alfie/Documents/school /computer science /courswork /FER-2013 data set /fer2013.csv' # change to where the file is
 
         #loading the FER_2013 daterset 
