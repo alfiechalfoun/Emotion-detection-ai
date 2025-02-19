@@ -9,15 +9,28 @@ class main(Video, Modle):
         Modle.__init__(self)
         self.count = 0
 
-    def predict_emotion(self):
-        self.count += 1 
-        if self.count == 5:
-            self.count = 0
-            if hasattr(self, 'resised_face'):
-                prediction = self.predict('CurrentFace.jpg')
-                self.change_box_coloure(prediction)
-                print(prediction)
-            
+    def initUI(self):
+        # Create instances of screens
+        self.welcome_screen = StartupPage(self)
+        self.login_page = LoginPage(self)
+        self.signup_page = SignUpWindow(self)
+        self.main_page = MainPage(self, self.current_user)
+        # self.video = RunVideo(self, self.current_user)
+
+        # Add widgets to the stack
+        self.addWidget(self.welcome_screen)
+        self.addWidget(self.login_page)
+        self.addWidget(self.signup_page)
+        self.addWidget(self.main_page)
+
+        # Set the initial screen
+        self.setCurrentWidget(self.welcome_screen)  
+    
+    def show_video(self):
+        self.video = RunVideo(self, self.current_user)
+        self.addWidget(self.video)
+        self.setCurrentWidget(self.video)
+
     def run_video(self):
         self.run = True
         self.load_modle()
