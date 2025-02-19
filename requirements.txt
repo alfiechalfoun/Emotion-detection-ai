@@ -7,3 +7,7 @@ opencv-python
 scikit-learn
 seaborn
 pillow_heif
+bcrypt
+sqlite3
+datetime
+struct

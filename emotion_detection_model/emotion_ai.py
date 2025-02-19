@@ -18,7 +18,7 @@ class FER13Data():
     def __init__(self):
         # lableing the dater 
         self.emotions = ['angry','disgust','fear','happy','sad','surprise','neutral']
-        self.FER_path = '/Users/alfie/Documents/school /computer science /courswork /FER-2013 data set /fer2013.csv' # change to where the file is
+        self.FER_path = 'emotion_detection_model/fer2013.csv' # change to where the file is
 
         #loading the FER_2013 daterset 
         self.faces = pd.read_csv(self.FER_path)
@@ -114,7 +114,6 @@ class Modle(FER13Data):
     def train_modle(self):
         self.create_modle()
 
-    #TODO making the modle stop traning if no improvment are found aveter 3 epsolons 
         self.early_stop = EarlyStopping(
             monitor='val_loss', 
             min_delta=0.001, 
@@ -170,9 +169,18 @@ class Modle(FER13Data):
         prosses_image = super().prosses_image(image)
         prediction = self.modle.predict(prosses_image)
         predicted_label = self.emotions[np.argmax(prediction)]
-        return(predicted_label)
+        
+        try:
+            max_index = np.argmax(prediction[0])  # Ensure max_index is correctly defined
+            self.confidence = prediction[0][max_index]
+        except Exception as e:
+            print(f"Error computing confidence: {e}")  # Print the error for debugging
+            self.confidence = 0.0  # Default confidence in case of failure
+
+        return predicted_label, self.confidence
+
+        
 
 if __name__ == '__main__':
     modle = Modle()
     modle.get_acuracy()
-    

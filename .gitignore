@@ -6,3 +6,9 @@ CurrentFace.jpg
 Vid/__pycache__
 emotion_detection_model/__pycache__
 emotion_detection_model/__pycache__/emotion_ai.cpython-311.pyc
+test.py
+emotion_detection_model/fer2013
+emotion_detection_model/fer2013/fer2013.csv
+users.db
+__pycache__
+

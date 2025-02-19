@@ -32,6 +32,7 @@ class Video(Maxpooling):
         self.faces = self.face_classifier.detectMultiScale(self.gray_image, 1.1, 4, minSize=(200, 200))
         for (x, y, w, h) in self.faces:
             cv2.rectangle(vid, (x, y), (x + w, y + h), self.box_colour, 2)
+            break
         return vid
     
     def Face_crop(self):

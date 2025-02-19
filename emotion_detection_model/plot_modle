@@ -1,0 +1,8 @@
+from keras.models import load_model
+from keras.utils import plot_model
+
+# Load your saved model
+model = load_model('/Users/alfie/Documents/school /computer science /courswork /Emotion-detection-ai/emotion_detection_model/emotion_detection_modle.h5')
+
+# Generate a plot of the model architecture
+plot_model(model, to_file='emotion_detection_model_architecture.png', show_shapes=True, show_layer_names=True)

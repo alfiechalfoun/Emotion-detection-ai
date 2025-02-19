@@ -1,13 +1,20 @@
-from Vid.Video import Video
-from emotion_detection_model.emotion_ai import Modle
-import time
-import cv2
+from PyQt5.QtWidgets import QApplication, QStackedWidget
+from openning_screen import StartupPage 
+from loginpage import LoginPage
+from sinup import SignUpWindow
+from mainpage import MainPage
+from RunVideo import RunVideo
+from database import create_connection, get_user_id
+from history import HistoryWindow
+import sqlite3
+import sys
 
-class main(Video, Modle):
+class AppController(QStackedWidget):
     def __init__(self):
-        Video.__init__(self)
-        Modle.__init__(self)
-        self.count = 0
+        self.conn = create_connection('users.db')
+        self.current_user = None
+        super().__init__()
+        self.initUI()
 
     def initUI(self):
         # Create instances of screens
@@ -15,7 +22,6 @@ class main(Video, Modle):
         self.login_page = LoginPage(self)
         self.signup_page = SignUpWindow(self)
         self.main_page = MainPage(self, self.current_user)
-        # self.video = RunVideo(self, self.current_user)
 
         # Add widgets to the stack
         self.addWidget(self.welcome_screen)
@@ -31,25 +37,35 @@ class main(Video, Modle):
         self.addWidget(self.video)
         self.setCurrentWidget(self.video)
 
-    def run_video(self):
-        self.run = True
-        self.load_modle()
-        while self.run:
-            ret, self.frame = self.vid.read()
-            if not ret:
-                print('Error, failed to get the frame.')
-                break
+    def show_login_page(self):
+        self.setCurrentWidget(self.login_page)
 
-            frame_with_faces = self.detect_bounding_box(self.frame)
-            cv2.imshow('Video', frame_with_faces)
+    def show_signup_page(self):
+        self.setCurrentWidget(self.signup_page)
 
-            self.Face_crop()
-            self.predict_emotion()
-
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                self.run = False
+    def show_welcome_screen(self):
+        self.current_user = None
+        self.setCurrentWidget(self.welcome_screen)
     
+    def show_history_page(self):
+        """Opens the History Window with the correct database connection."""
+        user_id = get_user_id(self.conn, self.current_user)  # Get the user ID
+        self.history = HistoryWindow(self, self.conn, user_id)  
+        self.addWidget(self.history)
+        self.setCurrentWidget(self.history)
 
-if __name__ == '__main__':
-    obj = main()
-    obj.run_video()
+
+    # changed to make a new instance inored to updat the name
+    def show_main_page(self):
+        self.main_page = MainPage(self, self.current_user)  
+        self.addWidget(self.main_page)
+        self.setCurrentWidget(self.main_page)
+    
+    def set_current_user(self, username):
+        self.current_user = username
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    controller = AppController()
+    controller.show()
+    sys.exit(app.exec_())
