@@ -6,6 +6,7 @@ from mainpage import MainPage
 from RunVideo import RunVideo
 from database import create_connection, get_user_id
 from history import HistoryWindow
+from ModleAcuracy import ModelAccuracyPage
 import sqlite3
 import sys
 
@@ -23,7 +24,7 @@ class AppController(QStackedWidget):
         self.signup_page = SignUpWindow(self)
         self.main_page = MainPage(self, self.current_user)
 
-        # Add widgets to the stack
+        # Add widgets to the stack  
         self.addWidget(self.welcome_screen)
         self.addWidget(self.login_page)
         self.addWidget(self.signup_page)
@@ -46,6 +47,12 @@ class AppController(QStackedWidget):
     def show_welcome_screen(self):
         self.current_user = None
         self.setCurrentWidget(self.welcome_screen)
+
+    def show_model_accuracy_page(self):
+        self.modle_accuracy = ModelAccuracyPage(self)
+        self.addWidget(self.modle_accuracy)
+        self.setCurrentWidget(self.modle_accuracy)
+
     
     def show_history_page(self):
         """Opens the History Window with the correct database connection."""
@@ -53,7 +60,6 @@ class AppController(QStackedWidget):
         self.history = HistoryWindow(self, self.conn, user_id)  
         self.addWidget(self.history)
         self.setCurrentWidget(self.history)
-
 
     # changed to make a new instance inored to updat the name
     def show_main_page(self):

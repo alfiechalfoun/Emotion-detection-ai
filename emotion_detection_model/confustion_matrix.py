@@ -60,7 +60,15 @@ class Matrix(Modle):
         sns.heatmap(self.table_normalized, annot= True, fmt='.2f', cmap='plasma', vmax= 100)
         plt.show()
 
+    def save_normalised_heatmap(self, filename="my_confusion_matrix.png"):
+        """Create and save the normalized heatmap to an image file."""
+        self.normalize_matrix()
+        sns.heatmap(self.table_normalized, annot=True, fmt='.2f', cmap='plasma', vmax=100)
+        plt.savefig(filename, bbox_inches='tight')  # Save the figure
+        plt.close()
+    
+
 if __name__ == '__main__':
     matrix = Matrix()
-    matrix.display_normalised_heatmap()
+    matrix.save_normalised_heatmap()
     

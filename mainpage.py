@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTableWidget,
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTableWidget, 
     QTableWidgetItem, QMessageBox, QApplication
 )
 from PyQt5.QtCore import Qt
@@ -16,6 +16,8 @@ class MainPage(QWidget):
 
         # --- Top Layout ---
         top_layout = QHBoxLayout()
+        top_layout.setSpacing(10)
+        top_layout.setContentsMargins(0, 0, 0, 0)
         
         # Logout Button
         self.logout_button = QPushButton("Logout")
@@ -32,21 +34,29 @@ class MainPage(QWidget):
 
         # --- Center Layout ---
         center_layout = QVBoxLayout()
+        center_layout.setSpacing(0)
+        center_layout.setContentsMargins(0, 0, 0, 0)
+
+        center_layout.addStretch()
         
         # Start Video Button
         self.start_video_button = QPushButton("Start Video")
         self.start_video_button.clicked.connect(self.start_video)
         self.start_video_button.setStyleSheet("font-size: 16px;")
         center_layout.addWidget(self.start_video_button, alignment=Qt.AlignCenter)
+        
+        center_layout.addStretch()
 
         # --- Bottom Layout ---
         bottom_layout = QHBoxLayout()
+        bottom_layout.setSpacing(10)
+        bottom_layout.setContentsMargins(10, 10, 10, 10)
         
         # Bottom Left: Table for Model Accuracy
-        self.accuracy_table = QTableWidget(3, 2)  # Example table with 3 rows and 2 columns
-        self.accuracy_table.setHorizontalHeaderLabels(["Metric", "Value"])
-        self.populate_accuracy_table()  # Fill table with data
-        bottom_layout.addWidget(self.accuracy_table, alignment=Qt.AlignLeft)
+        self.model_accuracy_button = QPushButton("Model Accuracy")
+        self.model_accuracy_button.clicked.connect(self.show_model_accuracy_page)
+        bottom_layout.addWidget(self.model_accuracy_button, alignment=Qt.AlignLeft)
+        
         
         # Bottom Right: History Button
         self.history_button = QPushButton("History")
@@ -82,3 +92,6 @@ class MainPage(QWidget):
     def show_history(self):
         """Opens the Emotion History window."""
         self.controller.show_history_page()
+    def show_model_accuracy_page(self):
+        """Opens the Model Accuracy window."""
+        self.controller.show_model_accuracy_page()
