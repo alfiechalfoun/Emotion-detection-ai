@@ -1,0 +1,11 @@
+In order to run my code fist download requierment.txt
+if the modle does no exsist (emotion_detection_model/emotion_detection_modle.h5) 
+then open (emotion_detection_model/emotion_ai.py) and run it 
+making sure that model.train_modle() is in the last line 
+
+if (my_confusion_matrix.png) doesnt exsis run (emotion_detection_model/confustion_matrix.py)
+
+now you can eather run the (run.py) to just get the live video with the mdole installd or
+you can run (main.py) to uses the applciation as intende(d) 
+
+Enjoy :)

@@ -18,11 +18,11 @@ class Matrix(Modle):
 
     def get_prediction(self): 
         for i in range(len(self.testing_images)):
-            self.labels.append(self.emotions[self.testing_labels[i]])  # ✅ Actual emotion label
+            self.labels.append(self.emotions[self.testing_labels[i]])  #  Actual emotion label
 
-            # ✅ Extract only the predicted label from predict()
+            #  Extract only the predicted label from predict()
             predicted_label, _ = super().predict(self.testing_images[i])  # Ignore confidence
-            self.predictions.append(predicted_label)  # ✅ Store only the label
+            self.predictions.append(predicted_label)  # Store only the label
 
 
     # uses the prediction and label to creat a confution matric 

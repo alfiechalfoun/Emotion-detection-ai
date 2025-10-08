@@ -21,7 +21,7 @@ class HistoryWindow(QWidget):
         self.date_picker = QDateEdit()
         self.date_picker.setCalendarPopup(True)
         self.date_picker.setDate(QDate.currentDate())  # Default to today's date
-        # ✅ Prevent selecting future dates
+        #  Prevent selecting future dates
         self.date_picker.setMaximumDate(QDate.currentDate())
         self.date_picker.dateChanged.connect(self.load_history)  # Update table on date change
         layout.addWidget(self.date_picker)

@@ -71,14 +71,6 @@ class MainPage(QWidget):
 
         self.setLayout(main_layout)
 
-    def populate_accuracy_table(self):
-        """Populate the model accuracy table with example data."""
-        metrics = ["Accuracy", "Precision", "Recall"]
-        values = ["95%", "92%", "90%"]  # Replace with real data as needed
-        for row, (metric, value) in enumerate(zip(metrics, values)):
-            self.accuracy_table.setItem(row, 0, QTableWidgetItem(metric))
-            self.accuracy_table.setItem(row, 1, QTableWidgetItem(value))
-
     def logout(self):
         """Handle logout and navigate to the login page."""
         if self.controller:
@@ -92,6 +84,7 @@ class MainPage(QWidget):
     def show_history(self):
         """Opens the Emotion History window."""
         self.controller.show_history_page()
+        
     def show_model_accuracy_page(self):
         """Opens the Model Accuracy window."""
         self.controller.show_model_accuracy_page()

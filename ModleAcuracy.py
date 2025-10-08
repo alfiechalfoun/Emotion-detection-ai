@@ -30,6 +30,6 @@ class ModelAccuracyPage(QWidget):
 
     def go_back(self):
         """Go back to the main page."""
-        self.controller.show_main_page()
         self.confusion_label.hide()
+        self.controller.show_main_page()
 

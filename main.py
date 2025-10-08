@@ -32,7 +32,9 @@ class AppController(QStackedWidget):
 
         # Set the initial screen
         self.setCurrentWidget(self.welcome_screen)  
-    
+        self.setWindowTitle("Emotion Detector")
+        self.resize(450, 318)
+
     def show_video(self):
         self.video = RunVideo(self, self.current_user)
         self.addWidget(self.video)
@@ -40,19 +42,22 @@ class AppController(QStackedWidget):
 
     def show_login_page(self):
         self.setCurrentWidget(self.login_page)
+        self.resize(450, 318)
+
 
     def show_signup_page(self):
         self.setCurrentWidget(self.signup_page)
+        self.resize(450, 318)
 
     def show_welcome_screen(self):
         self.current_user = None
         self.setCurrentWidget(self.welcome_screen)
+        self.resize(450, 318)
 
     def show_model_accuracy_page(self):
         self.modle_accuracy = ModelAccuracyPage(self)
         self.addWidget(self.modle_accuracy)
         self.setCurrentWidget(self.modle_accuracy)
-
     
     def show_history_page(self):
         """Opens the History Window with the correct database connection."""
@@ -60,12 +65,15 @@ class AppController(QStackedWidget):
         self.history = HistoryWindow(self, self.conn, user_id)  
         self.addWidget(self.history)
         self.setCurrentWidget(self.history)
+        self.resize(450, 318)
+
 
     # changed to make a new instance inored to updat the name
     def show_main_page(self):
         self.main_page = MainPage(self, self.current_user)  
         self.addWidget(self.main_page)
         self.setCurrentWidget(self.main_page)
+        self.resize(450, 318)
     
     def set_current_user(self, username):
         self.current_user = username

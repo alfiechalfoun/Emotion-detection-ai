@@ -183,4 +183,4 @@ class Modle(FER13Data):
 
 if __name__ == '__main__':
     modle = Modle()
-    modle.get_acuracy()
+    modle.train_modle()
